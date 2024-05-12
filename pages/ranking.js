@@ -15,7 +15,7 @@ const Ranking = ({ user, games, profile }) => {
   const [loading, setLoading] = useState(false);
 
 
-  const [selectedGame, setSelectedGame] = useState({ _id: 20, name: 'Browse Game', imgUrl: '/assets/media/ranking/console.png' });
+  const [selectedGame, setSelectedGame] = useState({ _id: 0, name: 'Browse Game', imgUrl: '/assets/media/ranking/console.png' });
 
   const [page, setPage] = useState(1);
 
@@ -38,8 +38,13 @@ const Ranking = ({ user, games, profile }) => {
       
       setLoading(true);
       // console.log("gandu page : " ,pag);
-      
-      const res = await axios.post(`${baseURL}/api/rankings/bywins/${game?._id}?page=${pag}`);
+      let res;
+    
+      if(game===0){
+        res= await axios.post(`${baseURL}/api/rankings/bywins?gameId=${game}?page=${pag}`);
+      }
+      res = await axios.post(`${baseURL}/api/rankings/bywins?page=${pag}`);
+    
       setPage(pag + 1);
   
       setTeamsRanks((p) => {
