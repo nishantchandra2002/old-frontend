@@ -41,10 +41,10 @@ const Ranking = ({ user, games, profile }) => {
       let res;
     
       if(game===0){
-        res= await axios.post(`${baseURL}/api/rankings/bywins?gameId=${game}?page=${pag}`);
+        res= await axios.post(`${baseURL}/api/rankings/bywins?page=${pag}`);
+      }else{
+        res = await axios.post(`${baseURL}/api/rankings/bywins?gameId=${game}?page=${pag}`);
       }
-      res = await axios.post(`${baseURL}/api/rankings/bywins?page=${pag}`);
-    
       setPage(pag + 1);
   
       setTeamsRanks((p) => {
