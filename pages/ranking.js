@@ -32,37 +32,32 @@ const Ranking = ({ user, games, profile }) => {
     $('a.model_close').parent().removeClass('show_model');
   };
 
-  const getData = async (pag, game) => {
-
-    // try {
-      
-      setLoading(true);
-      // console.log("gandu page : " ,pag);
-      let res;
-    
-      if(game===0){
-        res= await axios.post(`${baseURL}/api/rankings/bywins?page=${pag}`);
-      }else{
-        res = await axios.post(`${baseURL}/api/rankings/bywins?gameId=${game}?page=${pag}`);
+   const getData = async (pag, game) => {
+    setLoading(true);
+  
+    try {
+      let url;
+      if (game?._id === 0) {
+        url = `${baseURL}/api/rankings/bywins?page=${pag}`;
+      } else {
+        url = `${baseURL}/api/rankings/bywins?gameId=${game?._id}&page=${pag}`;
       }
+  
+      const res = await axios.post(url);
       setPage(pag + 1);
   
       setTeamsRanks((p) => {
-      let arr = [];
-        arr = [...p.team , ...res?.data?.team];
-        return {team : arr};
+        let arr = [...p.team, ...res?.data?.team];
+        return { team: arr };
       });
-
-      console.log("res",res);
-      // setTeamsRanks(res.data);
-      // console.log("teamRanks in ranking page",teamsRanks);
   
+      console.log("res", res);
+    } catch (error) {
+      console.log("error in getData:", error);
+    } finally {
       setLoading(false);
-      // console.log("response data gandu :", res, "page : ", page);
-    // } catch (error) {
-      // console.log("error in ranking.js",error);
-    // }
-  }
+    }
+  };
 
   console.log("gandu page : ", page);
 
